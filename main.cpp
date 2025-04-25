@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <time.h>
 
 struct date
 {
@@ -24,6 +25,8 @@ void maxDayOfMonth();
 void weekday();
 
 void festival();
+
+int dayOfYear(int,int,int);
 
 int main()
 {
@@ -54,7 +57,7 @@ int main()
                 fun4();
                 break;
             default:
-                printf("输入错误，请重新输入\n");
+                printf("输入错误，请重新输入\n\n\n");
         }
     }
     return 0;
@@ -74,7 +77,14 @@ void fun2()
 
 void fun3()
 {
-    printf("3\n");
+    int year, month, day, numOfDay;
+    printf("请输入年月日，中间以/隔开\n");
+    scanf("%d/%d/%d", &year, &month, &day);
+
+    numOfDay = dayOfYear(year, month, day);
+    printf("这一天是该年的第%d天\n\n\n", numOfDay);
+
+
 }
 
 void fun4()
@@ -103,7 +113,7 @@ void fun4()
         case 5:
             return;
         default:
-            printf("输入错误，请重新输入\n");
+            printf("输入错误，请重新输入\n\n\n");
     }
 }
 
@@ -112,10 +122,10 @@ void leapYear()
     int year;
     printf("请输入需要查询的年份\n");
     scanf("%d", &year);
-    if (year % 4 == 0 && year % 100 != 0)
-        printf("该年份是闰年\n");
+    if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0)
+        printf("该年份是闰年\n\n\n");
     else
-        printf("该年份不是闰年\n");
+        printf("该年份不是闰年\n\n\n");
 }
 
 void maxDayOfMonth()
@@ -130,7 +140,7 @@ void maxDayOfMonth()
     else if (month == 2)
         maxDay = 29;
     else
-        printf("输入错误，请重新输入\n");
+        printf("输入错误，请重新输入\n\n\n");
 }
 
 void weekday()
@@ -168,4 +178,25 @@ void weekday()
 void festival()
 {
     printf("todo\n");
+}
+
+int dayOfYear(int year, int month, int day)
+{
+    int numOfDay =0,i;
+    for (i = 1; i < month; i++)
+    {
+        if (i == 1 || i == 3 || i == 5 || i == 7 || i == 8 || i == 10 || i == 12)
+            numOfDay+=31;
+        else if (i == 4 || i == 6 || i == 9 || i == 11)
+            numOfDay+=30;
+        else
+        {
+            if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0)
+                numOfDay+=29;
+            else
+                numOfDay+=28;
+        }
+    }
+    numOfDay += day;
+    return numOfDay;
 }
