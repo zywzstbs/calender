@@ -1,14 +1,6 @@
 #include <stdio.h>
 #include <time.h>
-
-struct date
-{
-    int year;
-    int month;
-    int day;
-};
-
-typedef struct date Date;
+#include <math.h>
 
 void fun1();
 
@@ -26,19 +18,21 @@ void weekday();
 
 void festival();
 
-int dayOfYear(int,int,int);
+int dayOfYear(int, int, int);
+
+int printTable(int,int);
 
 int main()
 {
     while (1)
     {
         int n;
-        printf("ÇëÊäÈë²éÑ¯ÄÚÈİ\n");
-        printf("1.ÏÔÊ¾ÄêÀú\n");
-        printf("2.ÏÔÊ¾ÔÂÀú\n");
-        printf("3.ÈÕÀúÍ³¼Æ\n");
-        printf("4.²éÑ¯ÄêÀú\n");
-        printf("5.ÍË³ö\n");
+        printf("è¯·è¾“å…¥æŸ¥è¯¢å†…å®¹\n");
+        printf("1.æ˜¾ç¤ºå¹´å†\n");
+        printf("2.æ˜¾ç¤ºæœˆå†\n");
+        printf("3.æ—¥å†ç»Ÿè®¡\n");
+        printf("4.æŸ¥è¯¢å¹´å†\n");
+        printf("5.é€€å‡º\n");
         if (n == 5)
             break;
         scanf("%d", &n);
@@ -57,7 +51,7 @@ int main()
                 fun4();
                 break;
             default:
-                printf("ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë\n\n\n");
+                printf("è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥\n\n\n");
         }
     }
     return 0;
@@ -65,36 +59,56 @@ int main()
 
 void fun1()
 {
-    int year;
-    printf("ÇëÊäÈëÄê·İ\n");
+    int year,month;
+    printf("è¯·è¾“å…¥å¹´ä»½\n");
     scanf("%d", &year);
+    char a[13][7]={"ä¸€","äºŒ","ä¸‰","å››","äº”","å…­","ä¸ƒ","å…«","ä¹","å","åä¸€","åäºŒ"};
+    for (month=1;month<=12;month++)
+    {
+        printf("%sæœˆ\n",a[month-1]);
+        printTable(year,month);
+        printf("\n\n");
+    }
+
 }
 
 void fun2()
 {
-    printf("2\n");
+    int year,month;
+    printf("è¯·è¾“å…¥å¹´ä»½å’Œæœˆä»½ï¼Œä»¥/éš”å¼€\n");
+    scanf("%d/%d", &year, &month);
+    printTable(year,month);
+    printf("\n\n");
 }
 
 void fun3()
 {
     int year, month, day, numOfDay;
-    printf("ÇëÊäÈëÄêÔÂÈÕ£¬ÖĞ¼äÒÔ/¸ô¿ª\n");
+    printf("è¯·è¾“å…¥å¹´æœˆæ—¥ï¼Œä¸­é—´ä»¥/éš”å¼€\n");
     scanf("%d/%d/%d", &year, &month, &day);
 
     numOfDay = dayOfYear(year, month, day);
-    printf("ÕâÒ»ÌìÊÇ¸ÃÄêµÄµÚ%dÌì\n\n\n", numOfDay);
+    printf("è¿™ä¸€å¤©æ˜¯è¯¥å¹´çš„ç¬¬%då¤©\n", numOfDay);
 
-
+    time_t timep;
+    struct tm *tm;
+    time(&timep);
+    tm = localtime(&timep);
+    int date_i = tm->tm_mday;
+    int month_i = tm->tm_mon + 1;
+    int year_i = tm->tm_year + 1900;
+    int numOfDay_today = dayOfYear(year_i, month_i, date_i);
+    printf("è¿™ä¸€å¤©è·ç¦»ä»Šå¤©%då¤©\n\n\n", abs(numOfDay_today - numOfDay));
 }
 
 void fun4()
 {
     int n;
-    printf("1.²éÑ¯ÊÇ·ñÊÇÈòÄê\n");
-    printf("2.²éÑ¯Ä³ÔÂµÄ×î´óÌìÊı\n");
-    printf("3.²éÑ¯Ä³ÄêÄ³ÔÂÄ³ÈÕÊÇĞÇÆÚ¼¸\n");
-    printf("4.²éÑ¯Ä³ÄêÄ³ÔÂÄ³ÈÕÊÇ·ñÊÇÒõÀú»ò¹«Àú½ÚÈÕ\n");
-    printf("5.·µ»Ø\n");
+    printf("1.æŸ¥è¯¢æ˜¯å¦æ˜¯é—°å¹´\n");
+    printf("2.æŸ¥è¯¢æŸæœˆçš„æœ€å¤§å¤©æ•°\n");
+    printf("3.æŸ¥è¯¢æŸå¹´æŸæœˆæŸæ—¥æ˜¯æ˜ŸæœŸå‡ \n");
+    printf("4.æŸ¥è¯¢æŸå¹´æŸæœˆæŸæ—¥æ˜¯å¦æ˜¯é˜´å†æˆ–å…¬å†èŠ‚æ—¥\n");
+    printf("5.è¿”å›\n");
     scanf("%d", &n);
     switch (n)
     {
@@ -113,25 +127,25 @@ void fun4()
         case 5:
             return;
         default:
-            printf("ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë\n\n\n");
+            printf("è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥\n\n\n");
     }
 }
 
 void leapYear()
 {
     int year;
-    printf("ÇëÊäÈëĞèÒª²éÑ¯µÄÄê·İ\n");
+    printf("è¯·è¾“å…¥éœ€è¦æŸ¥è¯¢çš„å¹´ä»½\n");
     scanf("%d", &year);
     if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0)
-        printf("¸ÃÄê·İÊÇÈòÄê\n\n\n");
+        printf("è¯¥å¹´ä»½æ˜¯é—°å¹´\n\n\n");
     else
-        printf("¸ÃÄê·İ²»ÊÇÈòÄê\n\n\n");
+        printf("è¯¥å¹´ä»½ä¸æ˜¯é—°å¹´\n\n\n");
 }
 
 void maxDayOfMonth()
 {
     int month, maxDay;
-    printf("ÇëÊäÈëĞèÒª²éÑ¯µÄÔÂ·İ\n");
+    printf("è¯·è¾“å…¥éœ€è¦æŸ¥è¯¢çš„æœˆä»½\n");
     scanf("%d", &month);
     if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)
         maxDay = 31;
@@ -140,39 +154,54 @@ void maxDayOfMonth()
     else if (month == 2)
         maxDay = 29;
     else
-        printf("ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë\n\n\n");
+        printf("è¾“å…¥é”™è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥\n\n\n");
+    printf("è¯¥æœˆæœ€å¤§å¤©æ•°ä¸º%d\n\n\n", maxDay);
 }
 
 void weekday()
 {
-    int year, month, day, weekday;
-    printf("ÇëÊäÈëÄêÔÂÈÕ£¬ÖĞ¼äÒÔ/¸ô¿ª\n");
+    int year, month, day, weekday, q, m, j, k;
+    printf("è¯·è¾“å…¥å¹´æœˆæ—¥ï¼Œä¸­é—´ä»¥/éš”å¼€\n");
     scanf("%d/%d/%d", &year, &month, &day);
-    weekday = (day + 2 * month + 3 * (month + 1) / 5 + year + year / 4 - year / 100 + year / 400) % 7;
+
+    q = day;
+    if (month == 1 || month == 2)
+    {
+        m = month + 12;
+        year--;
+    } else
+        m = month;
+    j = year / 100;
+    k = year % 100;
+    weekday = (q + (26 * (m + 1) / 10) + k + k / 4 + 5 * j + j / 4) % 7-2;
+    if (weekday <0)
+        weekday += 7;
+
     switch (weekday)
     {
         case 0:
-            printf("ÕâÒ»ÌìÊÇĞÇÆÚÒ»\n");
+            printf("è¿™ä¸€å¤©æ˜¯æ˜ŸæœŸä¸€\n");
             break;
         case 1:
-            printf("ÕâÒ»ÌìÊÇĞÇÆÚ¶ş\n");
+            printf("è¿™ä¸€å¤©æ˜¯æ˜ŸæœŸäºŒ\n");
             break;
         case 2:
-            printf("ÕâÒ»ÌìÊÇĞÇÆÚÈı\n");
+            printf("è¿™ä¸€å¤©æ˜¯æ˜ŸæœŸä¸‰\n");
             break;
         case 3:
-            printf("ÕâÒ»ÌìÊÇĞÇÆÚËÄ\n");
+            printf("è¿™ä¸€å¤©æ˜¯æ˜ŸæœŸå››\n");
             break;
         case 4:
-            printf("ÕâÒ»ÌìÊÇĞÇÆÚÎå\n");
+            printf("è¿™ä¸€å¤©æ˜¯æ˜ŸæœŸäº”\n");
             break;
         case 5:
-            printf("ÕâÒ»ÌìÊÇĞÇÆÚÁù\n");
+            printf("è¿™ä¸€å¤©æ˜¯æ˜ŸæœŸå…­\n");
             break;
         case 6:
-            printf("ÕâÒ»ÌìÊÇĞÇÆÚÈÕ\n");
+            printf("è¿™ä¸€å¤©æ˜¯æ˜ŸæœŸæ—¥\n");
             break;
     }
+    printf("\n\n");
 }
 
 void festival()
@@ -182,21 +211,69 @@ void festival()
 
 int dayOfYear(int year, int month, int day)
 {
-    int numOfDay =0,i;
+    int numOfDay = 0, i;
     for (i = 1; i < month; i++)
     {
         if (i == 1 || i == 3 || i == 5 || i == 7 || i == 8 || i == 10 || i == 12)
-            numOfDay+=31;
+            numOfDay += 31;
         else if (i == 4 || i == 6 || i == 9 || i == 11)
-            numOfDay+=30;
+            numOfDay += 30;
         else
         {
             if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0)
-                numOfDay+=29;
+                numOfDay += 29;
             else
-                numOfDay+=28;
+                numOfDay += 28;
         }
     }
     numOfDay += day;
     return numOfDay;
+}
+
+int printTable(int year, int month)
+{
+    int  weekday, i, count = 0, dateNum,q,m,j,k;
+
+    if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12)
+        dateNum = 31;
+    else if (month == 4 || month == 6 || month == 9 || month == 11)
+        dateNum = 30;
+    else
+    {
+        if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0)
+            dateNum = 29;
+        else
+            dateNum = 28;
+    }
+
+    q = 1;
+    if (month == 1 || month == 2)
+    {
+        m = month + 12;
+        year--;
+    } else
+        m = month;
+    j = year / 100;
+    k = year % 100;
+    weekday = (q + (26 * (m + 1) / 10) + k + k / 4 + 5 * j + j / 4) % 7-1;
+    if (weekday <0)
+        weekday += 7;
+
+    printf("æ—¥\tä¸€\täºŒ\tä¸‰\tå››\täº”\tå…­\t\n");
+
+    if (weekday != 7)
+    {
+        for (i = 0; i < weekday; i++)
+        {
+            printf("\t");
+            count++;
+        }
+    }
+    for (i = 1; i <= dateNum; i++)
+    {
+        printf("%d\t", i);
+        count++;
+        if (count % 7 == 0)
+            printf("\n");
+    }
 }

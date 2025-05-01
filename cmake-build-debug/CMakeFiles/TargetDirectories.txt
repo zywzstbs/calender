@@ -1,3 +1,3 @@
-C:/code/c/programme design(C)/calender/cmake-build-debug/CMakeFiles/calender.dir
-C:/code/c/programme design(C)/calender/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/code/c/programme design(C)/calender/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/Volumes/KIOXIA/code/C/calender/cmake-build-debug/CMakeFiles/calender.dir
+/Volumes/KIOXIA/code/C/calender/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Volumes/KIOXIA/code/C/calender/cmake-build-debug/CMakeFiles/rebuild_cache.dir
